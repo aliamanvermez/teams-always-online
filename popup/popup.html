@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teams Always Online</title>
+  <link rel="stylesheet" href="popup.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand-group">
+        <div class="logo-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            <circle cx="18" cy="4" r="3" fill="#10B981" stroke="none"></circle>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Teams Always Online</h1>
+          <span class="version-badge">v1.1 • Multi-Layer Active</span>
+        </div>
+      </div>
+      <label class="main-toggle" title="Uzantıyı Aç / Kapat">
+        <input type="checkbox" id="powerToggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </header>
+
+    <!-- Main Status Card -->
+    <section class="status-card" id="statusCard">
+      <div class="status-indicator-ring">
+        <div class="status-dot" id="statusDot"></div>
+      </div>
+      <div class="status-details">
+        <div class="status-title" id="statusTitle">Sistem Aktif</div>
+        <div class="status-subtitle" id="statusSubtitle">Teams sekmesinde çevrimiçi tutuluyor</div>
+      </div>
+    </section>
+
+    <!-- Quick Settings Section -->
+    <section class="settings-section">
+      <h2 class="section-label">Ayarlar & Modlar</h2>
+      
+      <!-- Interval Setting -->
+      <div class="setting-row">
+        <div class="setting-info">
+          <span class="setting-name">Yineleme Sıklığı</span>
+          <span class="setting-desc">Aktivite tetikleme aralığı</span>
+        </div>
+        <select id="intervalSelect" class="custom-select">
+          <option value="10">10 Saniye (Ekstra Hızlı)</option>
+          <option value="15">15 Saniye</option>
+          <option value="30" selected>30 Saniye (Önerilen)</option>
+          <option value="60">1 Dakika</option>
+          <option value="120">2 Dakika</option>
+          <option value="300">5 Dakika</option>
+        </select>
+      </div>
+
+      <!-- Mode Selector -->
+      <div class="setting-row">
+        <div class="setting-info">
+          <span class="setting-name">Çalışma Modu</span>
+          <span class="setting-desc">Görsel bildirim tercihi</span>
+        </div>
+        <select id="modeSelect" class="custom-select">
+          <option value="stealth">Gizli (Stealth Mode)</option>
+          <option value="pulse">Pulse (Ekranda Nokta Göster)</option>
+        </select>
+      </div>
+
+      <!-- Audio Keep Alive Switch -->
+      <div class="setting-row">
+        <div class="setting-info">
+          <span class="setting-name">Arka Plan Koruması</span>
+          <span class="setting-desc">Sekme küçültüldüğünde Chrome uyutmasını engeller</span>
+        </div>
+        <label class="mini-toggle">
+          <input type="checkbox" id="audioKeepAliveToggle" checked>
+          <span class="mini-slider"></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- Working Hours Schedule Section -->
+    <section class="settings-section">
+      <div class="section-header-row">
+        <h2 class="section-label">Mesai Saatleri Zamanlayıcı</h2>
+        <label class="mini-toggle">
+          <input type="checkbox" id="scheduleToggle">
+          <span class="mini-slider"></span>
+        </label>
+      </div>
+      <div class="schedule-inputs-row" id="scheduleInputsRow">
+        <div class="time-input-group">
+          <label for="scheduleStart">Başlangıç</label>
+          <input type="time" id="scheduleStart" value="09:00" class="custom-time-input">
+        </div>
+        <div class="time-separator">-</div>
+        <div class="time-input-group">
+          <label for="scheduleEnd">Bitiş</label>
+          <input type="time" id="scheduleEnd" value="18:00" class="custom-time-input">
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Grid -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-value" id="totalPingsVal">0</span>
+        <span class="stat-label">Toplam Ping</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="lastPingVal">Henüz yok</span>
+        <span class="stat-label">Son Ping Zamanı</span>
+      </div>
+    </section>
+
+    <!-- Live Activity Log -->
+    <section class="logs-section">
+      <div class="logs-header">
+        <span class="section-label">Canlı Log Konsolu</span>
+        <button id="clearLogsBtn" class="text-btn">Temizle</button>
+      </div>
+      <div class="logs-container" id="logsContainer">
+        <div class="log-empty">Henüz aktivite kaydı bulunmuyor.</div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <a href="https://teams.microsoft.com/v2/" target="_blank" class="teams-link-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14h-2v-4H8v4H6V7h2v4h4V7h2v10z"/>
+        </svg>
+        Teams Web'i Aç
+      </a>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
